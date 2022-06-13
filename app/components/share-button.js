@@ -1,12 +1,16 @@
 import Component from '@glimmer/component';
+import { service } from '@ember/service';
 
 const TWEET_INTENT = 'https://twitter.com/intent/tweet';
+
 export default class ShareButtonComponent extends Component {
-  get currentURL(){
-    return window.location.href;
+  @service router;
+
+  get currentURL() {
+    return new URL(this.router.currentURL, window.location.origin);
   }
-  get shareURL(){
-    let url = new URL(TWEET_INTENT);
+  get shareURL() {
+    const url = new URL(TWEET_INTENT);
     url.searchParams.set('url',this.currentURL);
     if (this.args.text) {
       url.searchParams.set('text', this.args.text);
